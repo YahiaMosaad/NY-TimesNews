@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--NY Times-->
+        <scene sceneID="jsK-UC-3dB">
+            <objects>
+                <viewController storyboardIdentifier="NewsDetailsView" id="EjO-XB-1c9" customClass="NewsDetailsView" customModule="NY_TimesNews" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kkR-8j-1tH"/>
+                        <viewControllerLayoutGuide type="bottom" id="Vtu-YU-dYA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vxV-aQ-mso">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="faC-5d-DAq">
+                                <rect key="frame" x="0.0" y="44" width="414" height="358.5"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VS0-lS-nyi">
+                                <rect key="frame" x="20" y="430.5" width="374" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Q02-or-hpW">
+                                <rect key="frame" x="20" y="438.5" width="374" height="423.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="cLl-so-UAb"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="VS0-lS-nyi" firstAttribute="leading" secondItem="vxV-aQ-mso" secondAttribute="leadingMargin" id="5lt-Sa-119"/>
+                            <constraint firstItem="Q02-or-hpW" firstAttribute="top" secondItem="VS0-lS-nyi" secondAttribute="bottom" constant="8" id="7ln-cS-ahn"/>
+                            <constraint firstItem="VS0-lS-nyi" firstAttribute="trailing" secondItem="vxV-aQ-mso" secondAttribute="trailingMargin" id="8vX-SO-eyY"/>
+                            <constraint firstAttribute="trailing" secondItem="faC-5d-DAq" secondAttribute="trailing" id="Bft-Ti-fN9"/>
+                            <constraint firstItem="faC-5d-DAq" firstAttribute="leading" secondItem="vxV-aQ-mso" secondAttribute="leading" id="S8z-1a-kFA"/>
+                            <constraint firstItem="cLl-so-UAb" firstAttribute="bottom" secondItem="Q02-or-hpW" secondAttribute="bottom" id="TH6-JN-gYD"/>
+                            <constraint firstItem="faC-5d-DAq" firstAttribute="height" secondItem="vxV-aQ-mso" secondAttribute="height" multiplier="0.4" id="aA6-kc-Wm9"/>
+                            <constraint firstItem="Q02-or-hpW" firstAttribute="leading" secondItem="VS0-lS-nyi" secondAttribute="leading" id="iEf-VH-SvT"/>
+                            <constraint firstItem="VS0-lS-nyi" firstAttribute="top" secondItem="faC-5d-DAq" secondAttribute="bottom" constant="28" id="mep-Uz-leq"/>
+                            <constraint firstItem="Q02-or-hpW" firstAttribute="trailing" secondItem="VS0-lS-nyi" secondAttribute="trailing" id="tcX-bF-sCV"/>
+                            <constraint firstItem="faC-5d-DAq" firstAttribute="top" secondItem="cLl-so-UAb" secondAttribute="top" id="x07-A1-OL4"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="NY Times" id="UF0-Pw-7Xt"/>
+                    <connections>
+                        <outlet property="newsDetailsTextView" destination="Q02-or-hpW" id="NMI-Co-0HB"/>
+                        <outlet property="newsImageView" destination="faC-5d-DAq" id="pyd-HQ-qf4"/>
+                        <outlet property="newsTitleLabel" destination="VS0-lS-nyi" id="Wlw-Lk-wSQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Sc5-J4-xdU" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1566" y="90"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="default_placeholder" width="37.5" height="37.5"/>
+    </resources>
+</document>

@@ -24,7 +24,7 @@ class NY_TimesNewsTests: XCTestCase {
 
     func testGetRemoteRepositoryNewsListUseCase(){//from remote database with mocked store id and category id and user
         let expectation = self.expectation(description: "Get news querey is successfull")
-        let remoteRepo = NewsListRepositoryImp(network: HTTPClient.defaultClient)  //to execute remote request to db
+        let remoteRepo = NewsListRepository(network: HTTPClient.defaultClient)  //to execute remote request to db
         
         let mockedUseCase: GetNewsUseCase = .instance(input: .init(newsListRepository: remoteRepo))
         

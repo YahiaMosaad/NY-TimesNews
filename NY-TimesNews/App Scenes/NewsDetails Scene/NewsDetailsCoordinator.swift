@@ -7,13 +7,14 @@
 
 import UIKit
 
-final class NewsDetailsCoordinator: Coordinator{
-    var childCoordinators: [Coordinator] = []
+final class NewsDetailsCoordinator: BaseCoordinator {
     let dependencies: NewsDetailsCoordinatorDependencies
+    
     
     init(dependencies: NewsDetailsCoordinatorDependencies){
         self.dependencies = dependencies
     }
+    
     func start() {
         let newsDetailsView: NewsDetailsView = .instance(input: viewModel)
         dependencies.navigationController.pushViewController(newsDetailsView, animated: false)

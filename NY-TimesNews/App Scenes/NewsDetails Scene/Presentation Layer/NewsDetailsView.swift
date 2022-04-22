@@ -52,7 +52,7 @@ final class NewsDetailsView: UIViewController {
     
 
 }
-extension NewsDetailsView: Dependant{
+extension NewsDetailsView: BaseDependant {
     typealias Dependenceis = NewsDetailsViewModel
     
     static func instance(input: Dependenceis) -> NewsDetailsView {

@@ -17,8 +17,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
    
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        appCoordinator = AppCoordinator(window: window!)
-        appCoordinator.start()
+        if let window = window {
+            appCoordinator = AppCoordinator(dependencies: window)
+            appCoordinator.start()
+        } else {
+            // Handle window not found
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -7,32 +7,27 @@
 
 import UIKit
 
-final class AppCoordinator: Coordinator{
-    var childCoordinators: [Coordinator] = []
+final class AppCoordinator: BaseCoordinator {
+    let dependencies: UIWindow
     
-    private let window: UIWindow!
     private lazy var navigationController: UINavigationController = {
         UINavigationController()
     }()
     
-    init(window: UIWindow) {
-        self.window = window
+    init(dependencies: UIWindow) {
+        self.dependencies = dependencies
     }
+    
     
     func start() {//make desision about the landing scene
-        let coordinator: NewsListCoordinator =
-            .init(dependencies: .init(navigationController: navigationController))
+        let newsListCoordinatorDependencies = NewsListCoordinator.NewsListCoordinatorDependencies(navigationController: navigationController)
+        let coordinator = NewsListCoordinator(dependencies: newsListCoordinatorDependencies)
         coordinator.start()
         
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
+        dependencies.rootViewController = navigationController
+        dependencies.makeKeyAndVisible()
     }
     
-    private lazy var newsListCoordinator: NewsListCoordinator = {
-        .init(dependencies: .init(navigationController: navigationController))
-    }()
-    
-    func finish() {
-    }
+    func finish() {}
 }
 

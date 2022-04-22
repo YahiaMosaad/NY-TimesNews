@@ -7,8 +7,7 @@
 
 import UIKit
 
-final class NewsListCoordinator: Coordinator{
-    var childCoordinators: [Coordinator] = []
+final class NewsListCoordinator: BaseCoordinator {
     let dependencies: NewsListCoordinatorDependencies
     
     init(dependencies: NewsListCoordinatorDependencies){
@@ -16,40 +15,33 @@ final class NewsListCoordinator: Coordinator{
     }
     
     func start() {
-        let newsListView: NewsListView = .instance(input: viewModel)
+        let newsListView = NewsListViewController.instance(input: viewModel)
         dependencies.navigationController.pushViewController(newsListView, animated: false)
     }
     
     private lazy var viewModel: NewsListViewModel = {
-        return .instance(input: .init(
-            actions: NewsListActions(showNewsDetails: showNewsDetails),
-            getNewsListUseCase:
-                    .instance(input: .init(newsListRepository: NewsListRepositoryImp(network: HTTPClient.defaultClient)))
-            //                .mockedUseCase
-
-            ))
-                    
+        let action = NewsListActions(showNewsDetails: showNewsDetails, dismiss: dismiss)
+        let repo = NewsListRepository(network: HTTPClient.defaultClient)
+        let useCase = GetNewsUseCase(dependencies: GetNewsUseCase.GetNewsUseCaseDependencies(newsListRepository: repo))
+        let dependencies = NewsListViewModel.NewsListDependincies(actions: action, getNewsListUseCase: useCase)
+        return NewsListViewModel(dependencies: dependencies)
     }()
     
-    func finish() {
-        removeAllChildCoordinators()
-    }
+    func finish() {}
+    
     func showNewsDetails(newsDetails: NewsFeedData){
-        let coordinator: NewsDetailsCoordinator = .init(dependencies: .init(newDetails: newsDetails, navigationController: dependencies.navigationController))
-        addChildCoordinator(coordinator)
+        let dependencies = NewsDetailsCoordinator.NewsDetailsCoordinatorDependencies(newDetails: newsDetails,
+                                                                                     navigationController: dependencies.navigationController)
+        let coordinator = NewsDetailsCoordinator(dependencies: dependencies)
         coordinator.start()
+    }
+    
+    func dismiss() {
+        dependencies.navigationController.dismiss(animated: true)
     }
 
     struct NewsListCoordinatorDependencies{
         let navigationController: UINavigationController
-    }
-}
-
-extension NewsListCoordinator: Dependant{
-    typealias Dependenceis = NewsListCoordinatorDependencies
-    
-    static func instance(input: Dependenceis) -> NewsListCoordinator {
-        return NewsListCoordinator(dependencies: input)
     }
 }
 

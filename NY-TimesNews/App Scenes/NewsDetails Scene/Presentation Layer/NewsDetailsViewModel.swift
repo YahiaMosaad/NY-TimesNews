@@ -21,7 +21,7 @@ final class NewsDetailsViewModel: ObservableObject {
         newsDetails = dependencies.newsFeed
     }
 }
-extension NewsDetailsViewModel: Dependant{
+extension NewsDetailsViewModel: BaseDependant {
     typealias Dependenceis = NewsDetailsDependincies
     static func instance(input: Dependenceis) -> NewsDetailsViewModel {
         return NewsDetailsViewModel(dependencies: input)

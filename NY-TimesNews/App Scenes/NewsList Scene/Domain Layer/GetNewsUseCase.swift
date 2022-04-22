@@ -8,11 +8,6 @@
 import Combine
 
 final class GetNewsUseCase: UseCase{
-    
-    typealias T = NewsFeed?
-    typealias E = GetNewsUseCaseError
-    typealias Input = NewsPeriod
-    
     //here we add all business logic use cases
     let dependencies: GetNewsUseCaseDependencies
     
@@ -22,10 +17,14 @@ final class GetNewsUseCase: UseCase{
         print("init GetNewsUseCase")
     }
     
-    func execute(_ period: NewsPeriod?)-> UseCaseResult<NewsFeed?, GetNewsUseCaseError> {
+    func execute(_ period: NewsPeriod?)-> [NewsFeedData] {
 
         //request query
-        let query = GetNewsListQuery(period: period ?? .week, jsonString: APIParametersKey.json.key, keyString: APIParametersKey.NYTimesAPIKey.key, nyTimesKey: APIParametersValue.NYTimesAPIValue.value)
+        let period = period ?? .week
+        let query = GetNewsListQuery(period: period,
+                                     jsonString: APIParametersKey.json.key,
+                                     keyString: APIParametersKey.NYTimesAPIKey.key,
+                                     nyTimesKey: APIParametersValue.NYTimesAPIValue.value)
         return dependencies.newsListRepository.getNewsList(getNewsListQuery: query)
     }
 }
@@ -44,7 +43,7 @@ extension GetNewsUseCase{//business cases errors
     }
 }
 
-extension GetNewsUseCase: Dependant{
+extension GetNewsUseCase: BaseDependant {
     typealias Instance = GetNewsUseCase
     typealias Dependenceis = GetNewsUseCaseDependencies
     static func instance(input: GetNewsUseCaseDependencies) -> GetNewsUseCase {
@@ -54,6 +53,6 @@ extension GetNewsUseCase: Dependant{
 
 #if DEBUG
 extension GetNewsUseCase{
-    static let mockedUseCase: GetNewsUseCase = .init(dependencies: .init(newsListRepository: NewsListRepositoryImp(network: HTTPClient.defaultClient)))
+    static let mockedUseCase: GetNewsUseCase = .init(dependencies: .init(newsListRepository: NewsListRepository(network: HTTPClient.defaultClient)))
 }
 #endif

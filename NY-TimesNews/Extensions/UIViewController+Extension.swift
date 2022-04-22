@@ -10,7 +10,8 @@ import UIKit
 
 extension UIViewController{
     static func instantiate<T>()-> T{
-        let storyboard = UIStoryboard(name: "\(T.self)Storyboard", bundle: .main)
+        let storyboardName = "\(T.self)Storyboard".replacingOccurrences(of: "ViewController", with: "View")
+        let storyboard = UIStoryboard(name: storyboardName, bundle: .main)
         return storyboard.instantiateViewController(withIdentifier: "\(T.self)") as! T
     }
 }

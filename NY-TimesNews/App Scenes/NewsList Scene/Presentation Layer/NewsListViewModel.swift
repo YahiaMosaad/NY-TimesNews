@@ -10,9 +10,9 @@ import Combine
 import UIKit
 
 final class NewsListViewModel: ObservableObject {
-    @Published var newsList: [NewsFeedData]?
-    @Published var showLoadingIndicator: Bool = false
-    @Published var errorMessag: String?
+    var newsList: [NewsFeedData]?
+    var showLoadingIndicator: Bool = false
+    var errorMessag: String?
 
     let dependencies: NewsListDependincies
     private var cancellables: Set<AnyCancellable> = []
@@ -40,18 +40,7 @@ final class NewsListViewModel: ObservableObject {
     
     private func loadNews(with period: NewsPeriod) {
         showLoadingIndicator.toggle()
-        dependencies
-              .getNewsListUseCase
-              .execute(period)
-              .receive(on: RunLoop.main)
-              .sink { [weak self] (completion) in
-                  if case let .failure(error) = completion {
-                      self?.handleGetItemsError(error: error)
-                  }
-                  self?.showLoadingIndicator = false
-              } receiveValue: { [weak self] receivedNews in
-                  self?.newsList = receivedNews?.results
-              }.store(in: &cancellables)
+        newsList = dependencies.getNewsListUseCase.execute(period)
     }
     private func handleGetItemsError(error: GetNewsUseCase.GetNewsUseCaseError){
         switch error{
@@ -67,6 +56,7 @@ final class NewsListViewModel: ObservableObject {
     }
     func didSelectNews(at index: Int) {
         guard let details =  newsList?[index] else{
+            dependencies.actions.dismiss()
             return
         }
         dependencies.actions.showNewsDetails(details)
@@ -78,7 +68,7 @@ final class NewsListViewModel: ObservableObject {
     }
 }
 
-extension NewsListViewModel: Dependant{
+extension NewsListViewModel: BaseDependant {
     typealias Dependenceis = NewsListDependincies
     static func instance(input: Dependenceis) -> NewsListViewModel {
         return NewsListViewModel(dependencies: input)
@@ -91,7 +81,7 @@ extension NewsListViewModel: Dependant{
 
 struct NewsListActions{//communication from view model to coordinator
     let showNewsDetails: (NewsFeedData) -> ()
-
+    let dismiss: () -> ()
 }
 
 

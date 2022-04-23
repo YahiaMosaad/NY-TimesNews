@@ -57,7 +57,6 @@ final class NewsListView: UIViewController, LoadableIndicator{
                 }
                     
                 self?.newsTableView.isHidden = false
-//                self?.newsTableView.reloadData()
                     self?.reloadTableWithAnimation()
             }.store(in: &cancellables)
             
@@ -73,10 +72,11 @@ final class NewsListView: UIViewController, LoadableIndicator{
 
         }
     }
-        
-    deinit{
-        _ = cancellables.map{$0.cancel()}//cancel all observers
-    }
+     
+    //released by default
+//    deinit{
+//        _ = cancellables.map{$0.cancel()}//cancel all observers
+//    }
     
     private func reloadTableWithAnimation() {
         newsTableView.reloadSections([0], with: UITableView.RowAnimation.fade)
@@ -89,16 +89,16 @@ final class NewsListView: UIViewController, LoadableIndicator{
     }
 }
 
-extension NewsListView: Dependant{
-    typealias Dependenceis = NewsListViewModel
-    
-    static func instance(input: Dependenceis) -> NewsListView {
-        let instance: NewsListView = .instantiate()
-        print("init NewsListView")
-        instance.viewModel = input
-        return instance
-    }
-}
+//extension NewsListView: Dependant{
+//    typealias Dependenceis = NewsListViewModel
+//    
+//    static func instance(input: Dependenceis) -> NewsListView {
+//        let instance: NewsListView = .instantiate()
+//        print("init NewsListView")
+//        instance.viewModel = input
+//        return instance
+//    }
+//}
 
 
 extension NewsListView: UITableViewDataSource {

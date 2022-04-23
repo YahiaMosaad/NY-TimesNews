@@ -20,17 +20,24 @@ final class AppCoordinator: Coordinator{
     }
     
     func start() {//make desision about the landing scene
-        let coordinator: NewsListCoordinator =
-            .init(dependencies: .init(navigationController: navigationController))
-        coordinator.start()
+        let launchStateManager: LaunchStateManager = .init()
+        let status = launchStateManager.getLaunchState()
+        
+        switch status {
+        case .guest:
+            let coordinator: LoginViewCoordinator = .init(navigationController: navigationController)
+            coordinator.start()
+        case .onboarding:
+            let coordinator: LoginViewCoordinator = .init(navigationController: navigationController)
+            coordinator.start()
+        case .loggedIn:
+            let coordinator: NewsListCoordinator = .init(navigationController: navigationController)
+            coordinator.start()
+        }
         
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
     }
-    
-    private lazy var newsListCoordinator: NewsListCoordinator = {
-        .init(dependencies: .init(navigationController: navigationController))
-    }()
     
     func finish() {
     }

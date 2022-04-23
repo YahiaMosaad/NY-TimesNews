@@ -11,7 +11,7 @@ import Combine
 protocol NewsListRepository{
 //    var apiKey: String {get}
 //    var period: NewsPeriod {get}
-    func getNewsList(getNewsListQuery: GetNewsListQuery) -> UseCaseResult<NewsFeed?, GetNewsUseCase.GetNewsUseCaseError>
+    func getNewsList(getNewsListQuery: GetNewsListQuery) -> UseCaseResult<NewsFeed?, GetNewsUseCaseError>
 }
 
 final class NewsListRepositoryImp: NewsListRepository{
@@ -29,7 +29,7 @@ final class NewsListRepositoryImp: NewsListRepository{
         self.network = network
     }
     
-    func getNewsList(getNewsListQuery: GetNewsListQuery) -> UseCaseResult<NewsFeed?, GetNewsUseCase.GetNewsUseCaseError> {
+    func getNewsList(getNewsListQuery: GetNewsListQuery) -> UseCaseResult<NewsFeed?, GetNewsUseCaseError> {
     
         
         //period.rawValue + APIParametersKey.json.key + APIParametersKey.NYTimesAPIKey.key + apiKey
@@ -41,7 +41,7 @@ final class NewsListRepositoryImp: NewsListRepository{
             .map{(news) in
                 return news
             }
-            .mapError { error -> GetNewsUseCase.GetNewsUseCaseError in
+            .mapError { error -> GetNewsUseCaseError in
             switch error{
             case .invalidRequest:
                 return .noInternetConnection

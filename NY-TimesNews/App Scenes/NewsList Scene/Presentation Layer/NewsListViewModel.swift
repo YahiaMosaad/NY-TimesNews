@@ -14,12 +14,20 @@ final class NewsListViewModel: ObservableObject {
     @Published var showLoadingIndicator: Bool = false
     @Published var errorMessag: String?
 
-    let dependencies: NewsListDependincies
+//    let dependencies: NewsListDependincies
+    
+    private let actions: NewsListActions//to coordinator
+    private let getNewsListUseCase: GetNewsUseCase
+    
     private var cancellables: Set<AnyCancellable> = []
 
-    init(dependencies: NewsListDependincies){
-        self.dependencies = dependencies
-        print("init NewsListViewModel")
+//    init(dependencies: NewsListDependincies){
+//        self.dependencies = dependencies
+//        print("init NewsListViewModel")
+//    }
+    init(actions: NewsListActions, getNewsListUseCase: GetNewsUseCase) {
+        self.actions = actions
+        self.getNewsListUseCase = getNewsListUseCase
     }
     
     func viewDidLoad(){
@@ -40,8 +48,8 @@ final class NewsListViewModel: ObservableObject {
     
     private func loadNews(with period: NewsPeriod) {
         showLoadingIndicator.toggle()
-        dependencies
-              .getNewsListUseCase
+//        dependencies
+        self.getNewsListUseCase
               .execute(period)
               .receive(on: RunLoop.main)
               .sink { [weak self] (completion) in
@@ -53,7 +61,7 @@ final class NewsListViewModel: ObservableObject {
                   self?.newsList = receivedNews?.results
               }.store(in: &cancellables)
     }
-    private func handleGetItemsError(error: GetNewsUseCase.GetNewsUseCaseError){
+    private func handleGetItemsError(error: GetNewsUseCaseError){
         switch error{
         case .noInternetConnection:
             print("noInternetConnection")
@@ -69,7 +77,8 @@ final class NewsListViewModel: ObservableObject {
         guard let details =  newsList?[index] else{
             return
         }
-        dependencies.actions.showNewsDetails(details)
+//        dependencies.actions.showNewsDetails(details)
+        self.actions.showNewsDetails(details)
     }
     
     deinit{
@@ -78,16 +87,16 @@ final class NewsListViewModel: ObservableObject {
     }
 }
 
-extension NewsListViewModel: Dependant{
-    typealias Dependenceis = NewsListDependincies
-    static func instance(input: Dependenceis) -> NewsListViewModel {
-        return NewsListViewModel(dependencies: input)
-    }
-    struct NewsListDependincies{
-        let actions: NewsListActions//to coordinator
-        let getNewsListUseCase: GetNewsUseCase
-    }
-}
+//extension NewsListViewModel: Dependant{
+//    typealias Dependenceis = NewsListDependincies
+//    static func instance(input: Dependenceis) -> NewsListViewModel {
+//        return NewsListViewModel(dependencies: input)
+//    }
+//    struct NewsListDependincies{
+//        let actions: NewsListActions//to coordinator
+//        let getNewsListUseCase: GetNewsUseCase
+//    }
+//}
 
 struct NewsListActions{//communication from view model to coordinator
     let showNewsDetails: (NewsFeedData) -> ()

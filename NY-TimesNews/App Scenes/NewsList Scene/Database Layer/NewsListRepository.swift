@@ -9,21 +9,7 @@ import Foundation
 import Combine
 
 
-final class NewsListRepository {
-    private var network : HTTPClient
-//    var apiKey: String
-//    var period: NewsPeriod
-    
-//    init(apiKey: String, period: NewsPeriod){
-//        self.apiKey = apiKey
-////        self.period = period
-//        print("init NewsListRepositoryImp")
-//    }
-    
-    init (network: HTTPClient){
-        self.network = network
-    }
-    
+final class NewsListRepository: BaseRepository {
     func getNewsList(getNewsListQuery: GetNewsListQuery) -> [NewsFeedData] {
         // Network call
         return [NewsFeedData]()

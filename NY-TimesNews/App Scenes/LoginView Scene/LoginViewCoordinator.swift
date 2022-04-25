@@ -6,16 +6,22 @@
 //
 
 import UIKit
-final class LoginViewCoordinator: Coordinator{
-    private let navigationController: UINavigationController
-    init( navigationController: UINavigationController){
-        self.navigationController = navigationController
+final class LoginViewCoordinator: Coordinator {
+    internal let dependencies: UINavigationController
+    
+    
+    init(dependencies: UINavigationController){
+        self.dependencies = dependencies
     }
+    
     func start() {
         let view: LoginView = .instantiate()
-        view.viewModel = .init(loginUseCase: LoginUseCaseImp(loginRepository: LoginRepositoryMock()), routes: .init(showHomeView: showHomeView))
-        navigationController.pushViewController(view, animated: true)
+        view.viewModel = .init(loginUseCase: LoginUseCaseImp(loginRepository: LoginRepositoryMock(network: HTTPClient.defaultClient) as! LoginRepository), routes: .init(showHomeView: showHomeView))
+        dependencies.pushViewController(view, animated: true)
     }
+    
+    func finish() {}
+    
     private func showHomeView(){
         
     }

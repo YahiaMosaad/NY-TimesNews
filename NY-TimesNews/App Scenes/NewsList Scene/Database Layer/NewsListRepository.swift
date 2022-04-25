@@ -11,7 +11,7 @@ import Combine
 protocol NewsListRepository{
 //    var apiKey: String {get}
 //    var period: NewsPeriod {get}
-    func getNewsList(getNewsListQuery: GetNewsListQuery) -> UseCaseResult<NewsFeed?, GetNewsUseCaseError>
+    func getNewsList(getNewsListQuery: GetNewsListQuery) -> [NewsFeedData]
 }
 
 final class NewsListRepositoryImp: NewsListRepository{
@@ -29,26 +29,8 @@ final class NewsListRepositoryImp: NewsListRepository{
         self.network = network
     }
     
-    func getNewsList(getNewsListQuery: GetNewsListQuery) -> UseCaseResult<NewsFeed?, GetNewsUseCaseError> {
-    
-        
-        //period.rawValue + APIParametersKey.json.key + APIParametersKey.NYTimesAPIKey.key + apiKey
-        
-        let publisher:AnyPublisher<NewsFeed, RESTError> = network.request(method: .get, path: [Endpoints.mostviewedAllSections.name + getNewsListQuery.value]).responseJSON()
-        
-        //mapping remote db model to domain layer model and error
-        return publisher
-            .map{(news) in
-                return news
-            }
-            .mapError { error -> GetNewsUseCaseError in
-            switch error{
-            case .invalidRequest:
-                return .noInternetConnection
-            default:
-                return .noDataFound
-            }
-        }.eraseToAnyPublisher()
+    func getNewsList(getNewsListQuery: GetNewsListQuery) -> [NewsFeedData] {
+        return [NewsFeedData]()
     }
    
 }

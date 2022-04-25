@@ -10,14 +10,14 @@ import UIKit
 final class NewsListCoordinator: Coordinator{
 //    let dependencies: NewsListCoordinatorDependencies // use this way if there are many dependancies
     
-    private let navigationController: UINavigationController
+    internal let dependencies: UINavigationController
 //    init(dependencies: NewsListCoordinatorDependencies){
 //        self.dependencies = dependencies
 //    }
     
     
     init(navigationController: UINavigationController){
-        self.navigationController = navigationController
+        self.dependencies = navigationController
     }
     //Use this way when using struct of dependencies
 //    func start() {
@@ -27,9 +27,11 @@ final class NewsListCoordinator: Coordinator{
     func start() {
         let newsListView: NewsListView = .instantiate()
         newsListView.viewModel = .init(actions: .init(showNewsDetails: showNewsDetails(newsDetails:)), getNewsListUseCase: GetNewsUseCaseImp(newsListRepository: NewsListRepositoryImp(network: .defaultClient)))
-        navigationController.pushViewController(newsListView, animated: false)
+        dependencies.pushViewController(newsListView, animated: false)
 
     }
+    
+    func finish() {}
     
 //    func start() {
 //        let newsListView: NewsListView = .instantiate()
@@ -49,7 +51,7 @@ final class NewsListCoordinator: Coordinator{
 //    }()
     
     func showNewsDetails(newsDetails: NewsFeedData){
-        let coordinator: NewsDetailsCoordinator = .init(dependencies: .init(newDetails: newsDetails, navigationController: navigationController))
+        let coordinator: NewsDetailsCoordinator = .init(dependencies: .init(newDetails: newsDetails, navigationController: dependencies))
         coordinator.start()
 //        let coordinator: NewsDetailsCoordinator = .init(dependencies: .init(newDetails: newsDetails, navigationController: dependencies.navigationController))
 //        coordinator.start()

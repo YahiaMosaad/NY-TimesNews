@@ -49,27 +49,17 @@ final class NewsListView: UIViewController, LoadableIndicator{
     private func bindViewStates(toEvent event: NewsListEvents){
         switch event {
         case .showNewsFeed:
-            viewModel.$newsList
-                .receive(on: RunLoop.main)
-                .sink{ [weak self] news in
-                guard let news = news, news.count > 0 else {
-                    return
-                }
-                    
-                self?.newsTableView.isHidden = false
-                    self?.reloadTableWithAnimation()
-            }.store(in: &cancellables)
-            
+            if let news = viewModel.newsList, news.count > 0 {
+                newsTableView.isHidden = false
+                reloadTableWithAnimation()
+            }
         case .showLoadingIndicator:
-            viewModel.$showLoadingIndicator.sink { [weak self] show in
-                self?.showLoadingIndicator(show: show)
-            }.store(in: &cancellables)
+            let showIndicator = viewModel.showLoadingIndicator
+            showLoadingIndicator(show: showIndicator)
             
         case .showErrorMessage:
-            viewModel.$errorMessag.sink { [weak self] message in
-                self?.errorLabel.text = message
-            }.store(in: &cancellables)
-
+            let errorMessage = viewModel.errorMessag
+            errorLabel.text = errorMessage
         }
     }
      

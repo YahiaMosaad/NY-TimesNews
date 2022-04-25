@@ -7,8 +7,7 @@
 
 import UIKit
 
-final class NewsDetailsCoordinator: Coordinator{
-    var childCoordinators: [Coordinator] = []
+final class NewsDetailsCoordinator: Coordinator {
     let dependencies: NewsDetailsCoordinatorDependencies
     
     init(dependencies: NewsDetailsCoordinatorDependencies){

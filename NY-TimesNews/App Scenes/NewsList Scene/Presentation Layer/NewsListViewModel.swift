@@ -6,20 +6,17 @@
 //
 
 import Foundation
-import Combine
 import UIKit
 
 final class NewsListViewModel: ObservableObject {
-    @Published var newsList: [NewsFeedData]?
-    @Published var showLoadingIndicator: Bool = false
-    @Published var errorMessag: String?
+    var newsList: [NewsFeedData]?
+    var showLoadingIndicator: Bool = false
+    var errorMessag: String?
 
 //    let dependencies: NewsListDependincies
     
     private let actions: NewsListActions//to coordinator
     private let getNewsListUseCase: GetNewsUseCase
-    
-    private var cancellables: Set<AnyCancellable> = []
 
 //    init(dependencies: NewsListDependincies){
 //        self.dependencies = dependencies
@@ -31,7 +28,7 @@ final class NewsListViewModel: ObservableObject {
     }
     
     func viewDidLoad(){
-        self.loadNews(with: .week)
+        newsList = loadNews(with: .week)
     }
     func didChangeSegementValue (segement: NewsListViewSegment){
         switch segement
@@ -46,20 +43,10 @@ final class NewsListViewModel: ObservableObject {
         }
     }
     
-    private func loadNews(with period: NewsPeriod) {
+    private func loadNews(with period: NewsPeriod) -> [NewsFeedData] {
         showLoadingIndicator.toggle()
 //        dependencies
-        self.getNewsListUseCase
-              .execute(period)
-              .receive(on: RunLoop.main)
-              .sink { [weak self] (completion) in
-                  if case let .failure(error) = completion {
-                      self?.handleGetItemsError(error: error)
-                  }
-                  self?.showLoadingIndicator = false
-              } receiveValue: { [weak self] receivedNews in
-                  self?.newsList = receivedNews?.results
-              }.store(in: &cancellables)
+        return self.getNewsListUseCase.execute(period)
     }
     private func handleGetItemsError(error: GetNewsUseCaseError){
         switch error{
@@ -79,11 +66,6 @@ final class NewsListViewModel: ObservableObject {
         }
 //        dependencies.actions.showNewsDetails(details)
         self.actions.showNewsDetails(details)
-    }
-    
-    deinit{
-        print("deinit Items list view model")
-        _ = cancellables.map{$0.cancel()}
     }
 }
 

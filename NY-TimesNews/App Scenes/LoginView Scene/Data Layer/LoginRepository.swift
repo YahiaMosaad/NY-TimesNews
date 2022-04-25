@@ -12,11 +12,11 @@ struct LoginQuery: Codable{
     let password: String
 }
 
-protocol LoginRepository{
+protocol LoginRepository: Repository {
     func login(query: LoginQuery)-> AnyPublisher<User, LoginUseCaseError>
 }
 
-final class LoginRepositoryMock: LoginRepository{
+final class LoginRepositoryMock: Repository {
     func login(query: LoginQuery) -> AnyPublisher<User, LoginUseCaseError> {
         Just(User(name: "Yahia")).setFailureType(to: LoginUseCaseError.self)
             .eraseToAnyPublisher()

@@ -1,13 +1,14 @@
 //
-//  Coordinator.swift
+//  BaseCooedinator.swift
 //  NY-TimesNews
 //
-//  Created by Yahia Mosaad on 26/01/2022.
+//  Created by Ali Amin on 25/04/2022.
 //
 
 import Foundation
 
-protocol Coordinator: AnyObject{
+
+protocol BaseCoordinator {
     associatedtype T
 
 

@@ -8,7 +8,7 @@
 import Combine
 
 protocol GetNewsUseCase{
-    func execute(_ period: NewsPeriod?)-> UseCaseResult<NewsFeed?, GetNewsUseCaseError>
+    func execute(_ period: NewsPeriod?)-> [NewsFeedData]
 }
 
 final class GetNewsUseCaseImp: GetNewsUseCase{
@@ -26,7 +26,7 @@ final class GetNewsUseCaseImp: GetNewsUseCase{
         print("init GetNewsUseCase")
     }
     
-    func execute(_ period: NewsPeriod?)-> UseCaseResult<NewsFeed?, GetNewsUseCaseError> {
+    func execute(_ period: NewsPeriod?)-> [NewsFeedData] {
         let query = GetNewsListQuery(period: period ?? .week, jsonString: APIParametersKey.json.key, keyString: APIParametersKey.NYTimesAPIKey.key, nyTimesKey: APIParametersValue.NYTimesAPIValue.value)
         return newsListRepository.getNewsList(getNewsListQuery: query)
     }
@@ -62,8 +62,8 @@ enum GetNewsUseCaseError: Error{
 
 #if DEBUG
 final class GetNewsUseCaseMock: GetNewsUseCase{
-    func execute(_ period: NewsPeriod?)-> UseCaseResult<NewsFeed?, GetNewsUseCaseError>{
-        return Just(NewsFeed(status:"tmam", copyright: "No copy rights", results: [.init(title: "sjbdks", publishedDate: "sdkjb", identifier: 2, abstract: "fsd", media: nil)])).setFailureType(to: GetNewsUseCaseError.self).eraseToAnyPublisher()
+    func execute(_ period: NewsPeriod?)-> [NewsFeedData] {
+        return [NewsFeedData]()
     }
 }
 #endif

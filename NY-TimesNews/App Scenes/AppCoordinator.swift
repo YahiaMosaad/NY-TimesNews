@@ -8,15 +8,13 @@
 import UIKit
 
 final class AppCoordinator: Coordinator{
-    var childCoordinators: [Coordinator] = []
-    
-    private let window: UIWindow!
+    internal let dependencies: UIWindow
     private lazy var navigationController: UINavigationController = {
         UINavigationController()
     }()
     
-    init(window: UIWindow) {
-        self.window = window
+    init(dependencies: UIWindow) {
+        self.dependencies = dependencies
     }
     
     func start() {//make desision about the landing scene
@@ -25,18 +23,18 @@ final class AppCoordinator: Coordinator{
         
         switch status {
         case .guest:
-            let coordinator: LoginViewCoordinator = .init(navigationController: navigationController)
+            let coordinator: LoginViewCoordinator = .init(dependencies: navigationController)
             coordinator.start()
         case .onboarding:
-            let coordinator: LoginViewCoordinator = .init(navigationController: navigationController)
+            let coordinator: LoginViewCoordinator = .init(dependencies: navigationController)
             coordinator.start()
         case .loggedIn:
             let coordinator: NewsListCoordinator = .init(navigationController: navigationController)
             coordinator.start()
         }
         
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
+        dependencies.rootViewController = navigationController
+        dependencies.makeKeyAndVisible()
     }
     
     func finish() {
